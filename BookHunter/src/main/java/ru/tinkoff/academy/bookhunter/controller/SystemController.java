@@ -1,6 +1,7 @@
 package ru.tinkoff.academy.bookhunter.controller;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -9,12 +10,12 @@ import reactor.core.publisher.Mono;
 import ru.tinkoff.academy.bookhunter.service.SystemService;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/system")
 @Tag(name="System")
 public class SystemController {
 
-    @Autowired
-    SystemService systemService;
+    private final SystemService systemService;
 
     @GetMapping("/liveness")
     Mono<String> getLivenessStatus() {

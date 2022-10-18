@@ -1,6 +1,7 @@
 package ru.tinkoff.academy.bookhunter.controller;
 
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
@@ -11,10 +12,10 @@ import ru.tinkoff.academy.bookhunter.service.UserProfileService;
 import java.util.UUID;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/user/profile")
 public class UserProfileController {
-    @Autowired
-    private UserProfileService userProfileService;
+    private final UserProfileService userProfileService;
 
     @GetMapping
     public Flux<UserProfileDTO> getAllUserProfile() {

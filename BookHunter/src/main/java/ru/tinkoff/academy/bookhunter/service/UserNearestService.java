@@ -1,5 +1,6 @@
 package ru.tinkoff.academy.bookhunter.service;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
@@ -11,16 +12,14 @@ import ru.tinkoff.academy.bookhunter.repo.UserProfileMapRepository;
 import java.util.*;
 
 @Service
+@RequiredArgsConstructor
 public class UserNearestService {
 
-    @Autowired
-    UserProfileMapRepository userProfileMapRepository;
+    private final UserProfileMapRepository userProfileMapRepository;
 
-    @Autowired
-    UserProfileConverter userProfileConverter;
+    private final UserProfileConverter userProfileConverter;
 
-    @Autowired
-    EarthDistanceService earthDistanceService;
+    private final EarthDistanceService earthDistanceService;
 
     public Flux<UserProfileDTO> getNearestToId(UUID id, Long distance, Long amount) {
         List<UserProfile> userProfiles = new ArrayList<>(userProfileMapRepository.findAll());

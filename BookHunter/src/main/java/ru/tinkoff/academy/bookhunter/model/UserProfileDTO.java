@@ -1,13 +1,9 @@
 package ru.tinkoff.academy.bookhunter.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import ru.tinkoff.academy.bookhunter.model.enums.Gender;
 
-@Getter
-@Setter
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserProfileDTO {

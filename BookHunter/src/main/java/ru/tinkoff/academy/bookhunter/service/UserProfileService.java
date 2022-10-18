@@ -1,27 +1,23 @@
 package ru.tinkoff.academy.bookhunter.service;
 
-import org.reactivestreams.Publisher;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import ru.tinkoff.academy.bookhunter.converter.UserProfileConverter;
-import ru.tinkoff.academy.bookhunter.model.UserProfile;
 import ru.tinkoff.academy.bookhunter.model.UserProfileDTO;
 import ru.tinkoff.academy.bookhunter.repo.UserProfileMapRepository;
 
-import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class UserProfileService {
 
-    @Autowired
-    private UserProfileMapRepository userProfileMapRepository;
+    private final UserProfileMapRepository userProfileMapRepository;
 
-    @Autowired
-    private UserProfileConverter userProfileConverter;
+    private final UserProfileConverter userProfileConverter;
 
     public Mono<UserProfileDTO> save(UserProfileDTO userProfileDTO) {
         userProfileMapRepository.save(userProfileConverter.convertToEntity(userProfileDTO, null));
