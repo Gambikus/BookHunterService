@@ -11,9 +11,10 @@ import java.util.Objects;
 import java.util.UUID;
 
 @Component
+@RequiredArgsConstructor
 public class UserProfileConverter {
 
-    private final ModelMapper modelMapper = new ModelMapper();
+    private final ModelMapper modelMapper;
 
     public UserProfileDTO convertToDTO(UserProfile userProfile) {
         if (userProfile == null) {

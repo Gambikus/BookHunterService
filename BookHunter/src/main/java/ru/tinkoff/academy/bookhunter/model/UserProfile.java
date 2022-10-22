@@ -11,7 +11,7 @@ import java.util.UUID;
 //@Entity
 public class UserProfile {
     //@Id
-    private UUID id = UUID.randomUUID();
+    private UUID id;
 
     //@Column
     private String nick;
