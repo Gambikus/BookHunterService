@@ -1,7 +1,7 @@
 package ru.tinkoff.academy.bookhunter.repo;
 
 
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Component;
 import ru.tinkoff.academy.bookhunter.exception.UserProfileNotFoundException;
 import ru.tinkoff.academy.bookhunter.model.UserProfile;
 
@@ -10,8 +10,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-@Repository
-public class UserProfileMapRepository {
+@Component
+public class UserProfileMap {
     private final Map<UUID, UserProfile> repo = new HashMap<>();
 
     public UserProfile findById(UUID id) {

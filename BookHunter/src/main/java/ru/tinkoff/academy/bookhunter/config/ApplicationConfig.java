@@ -1,4 +1,4 @@
-package ru.tinkoff.academy.bookhunter;
+package ru.tinkoff.academy.bookhunter.config;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;

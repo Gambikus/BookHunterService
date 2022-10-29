@@ -2,10 +2,9 @@ package ru.tinkoff.academy.bookhunter.converter;
 
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ru.tinkoff.academy.bookhunter.model.UserProfile;
-import ru.tinkoff.academy.bookhunter.model.UserProfileDTO;
+import ru.tinkoff.academy.bookhunter.DTO.UserProfileDTO;
 
 import java.util.Objects;
 import java.util.UUID;
@@ -16,7 +15,7 @@ public class UserProfileConverter {
 
     private final ModelMapper modelMapper;
 
-    public UserProfileDTO convertToDTO(UserProfile userProfile) {
+    public UserProfileDTO toDTO(UserProfile userProfile) {
         if (userProfile == null) {
             return null;
         }
@@ -25,7 +24,7 @@ public class UserProfileConverter {
         return userProfileDTO;
     }
 
-    public UserProfile convertToEntity(UserProfileDTO userProfileDTO, UUID id) {
+    public UserProfile toEntity(UserProfileDTO userProfileDTO, UUID id) {
         if (userProfileDTO == null) {
             return null;
         }

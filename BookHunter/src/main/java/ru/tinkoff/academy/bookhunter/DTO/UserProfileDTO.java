@@ -1,4 +1,4 @@
-package ru.tinkoff.academy.bookhunter.model;
+package ru.tinkoff.academy.bookhunter.DTO;
 
 import lombok.*;
 import ru.tinkoff.academy.bookhunter.model.enums.Gender;

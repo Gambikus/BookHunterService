@@ -12,7 +12,7 @@ public class SystemService {
     private final WebClient webClient;
     final String baseUrl = "http://localhost:8080/actuator/";
 
-    public Mono<String> getProbResponse(String endpoint) {
+    public Mono<String> getSystemResponse(String endpoint) {
         return webClient
                 .get()
                 .uri(baseUrl + endpoint)

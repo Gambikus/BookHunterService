@@ -1,10 +1,9 @@
 package ru.tinkoff.academy.bookhunter.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
-import ru.tinkoff.academy.bookhunter.model.UserProfileDTO;
+import ru.tinkoff.academy.bookhunter.DTO.UserProfileDTO;
 import ru.tinkoff.academy.bookhunter.service.UserNearestService;
 
 import java.util.UUID;

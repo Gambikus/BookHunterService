@@ -2,7 +2,6 @@ package ru.tinkoff.academy.bookhunter.controller;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,17 +18,17 @@ public class SystemController {
 
     @GetMapping("/liveness")
     Mono<String> getLivenessStatus() {
-        return systemService.getProbResponse("health/liveness");
+        return systemService.getSystemResponse("health/liveness");
     }
 
     @GetMapping("/readiness")
     Mono<String> getReadinessStatus() {
-        return systemService.getProbResponse("health/readiness");
+        return systemService.getSystemResponse("health/readiness");
     }
 
 
     @GetMapping("/version")
     Mono<String> getHealthStatus() {
-        return systemService.getProbResponse("info");
+        return systemService.getSystemResponse("info");
     }
 }

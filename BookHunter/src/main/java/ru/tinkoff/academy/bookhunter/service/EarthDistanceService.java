@@ -4,6 +4,8 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class EarthDistanceService {
+
+    // Радиус земли в метрах
     private final Double earthRadius = 6371009D;
 
     public Double getDistanceBetweenTwoObjects(Double latitude1,
