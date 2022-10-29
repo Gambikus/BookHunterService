@@ -10,9 +10,9 @@ import ru.tinkoff.academy.bookhunter.components.Error;
 import ru.tinkoff.academy.bookhunter.exception.UserProfileNotFoundException;
 
 @ControllerAdvice
-public class ExceptionHandlerController extends ResponseEntityExceptionHandler {
-    @ExceptionHandler
-    ResponseEntity<Error> handleNotFoundException(UserProfileNotFoundException exception) {
+public class ExceptionHandlerController { // extends ResponseEntityExceptionHandler {
+    @ExceptionHandler(UserProfileNotFoundException.class)
+    public ResponseEntity<Error> handleNotFoundException(UserProfileNotFoundException exception) {
         return new ResponseEntity<>(new Error(exception.getMessage(), 404), HttpStatus.NOT_FOUND);
     }
 }
