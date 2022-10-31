@@ -39,7 +39,7 @@ public class UserNearestService {
                     currentUserProfile.getLongitude(),
                     mainUserProfile.getLatitude(),
                     mainUserProfile.getLongitude());
-            if ((long)Math.ceil(currentDistance) > distance) {
+            if (earthDistanceService.compareWithError(currentDistance, (double)distance) == 1) {
                 break;
             }
             result.add(userProfileConverter.toDTO(currentUserProfile));

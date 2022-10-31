@@ -27,7 +27,7 @@ public class UserProfileController {
     }
 
     @PostMapping
-    public Mono<UserProfileDTO> createUserProfile(@RequestBody UserProfileDTO userProfileDTO) {
+    public Mono<UUID> createUserProfile(@RequestBody UserProfileDTO userProfileDTO) {
         return userProfileService.save(userProfileDTO);
     }
 

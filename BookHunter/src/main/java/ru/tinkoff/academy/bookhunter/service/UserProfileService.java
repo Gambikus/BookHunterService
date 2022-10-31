@@ -19,9 +19,8 @@ public class UserProfileService {
 
     private final UserProfileConverter userProfileConverter;
 
-    public Mono<UserProfileDTO> save(UserProfileDTO userProfileDTO) {
-        userProfileMap.save(userProfileConverter.toEntity(userProfileDTO, null));
-        return Mono.just(userProfileDTO);
+    public Mono<UUID> save(UserProfileDTO userProfileDTO) {
+        return Mono.just(userProfileMap.save(userProfileConverter.toEntity(userProfileDTO, null)));
     }
 
     public Mono<UserProfileDTO> findById(UUID id) {
