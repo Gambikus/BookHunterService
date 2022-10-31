@@ -25,8 +25,9 @@ public class UserProfileMap {
         return repo.values().stream().toList();
     }
 
-    public void save(UserProfile userProfile) {
+    public UUID save(UserProfile userProfile) {
         repo.put(userProfile.getId(), userProfile);
+        return userProfile.getId();
     }
 
     public void deleteById(UUID id) {
@@ -52,5 +53,9 @@ public class UserProfileMap {
             }
         }
         throw new UserProfileNotFoundException("location" + latitude.toString() + ", " + longitude.toString());
+    }
+
+    public void deleteAll() {
+        repo.clear();
     }
 }
