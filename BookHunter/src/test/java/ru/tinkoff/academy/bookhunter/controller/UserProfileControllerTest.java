@@ -2,14 +2,13 @@ package ru.tinkoff.academy.bookhunter.controller;
 
 
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import reactor.core.publisher.Mono;
-import ru.tinkoff.academy.bookhunter.DTO.UserProfileDTO;
+import ru.tinkoff.academy.bookhunter.dto.UserProfileDto;
 import ru.tinkoff.academy.bookhunter.model.enums.Gender;
 import ru.tinkoff.academy.bookhunter.repo.UserProfileMap;
 
@@ -28,13 +27,13 @@ public class UserProfileControllerTest {
     @Autowired
     private UserProfileMap userProfileMap;
 
-    private UserProfileDTO userProfileDTO;
+    private UserProfileDto userProfileDTO;
 
     private WebTestClient.ResponseSpec responseSpec;
 
     private UUID userProfileId;
 
-    private List<UserProfileDTO> DTOs;
+    private List<UserProfileDto> DTOs;
 
     @AfterEach
     public void clear() {
@@ -55,7 +54,7 @@ public class UserProfileControllerTest {
     }
 
     private void givenUserProfileDTO() {
-        userProfileDTO = new UserProfileDTO(
+        userProfileDTO = new UserProfileDto(
                 "gambikus",
                 "Vasya",
                 18,
@@ -67,7 +66,7 @@ public class UserProfileControllerTest {
     private void whenCreateUserProfile() {
         responseSpec = webTestClient.post()
                 .uri("/user/profile")
-                .body(Mono.just(userProfileDTO), UserProfileDTO.class)
+                .body(Mono.just(userProfileDTO), UserProfileDto.class)
                 .exchange();
     }
     private void thenCreationShouldBeSuccessful() {
@@ -106,7 +105,7 @@ public class UserProfileControllerTest {
         responseSpec
                 .expectStatus()
                 .is2xxSuccessful()
-                .expectBody(UserProfileDTO.class)
+                .expectBody(UserProfileDto.class)
                 .isEqualTo(userProfileDTO);
     }
 
@@ -148,7 +147,7 @@ public class UserProfileControllerTest {
 
     private void givenCreationUserProfileAndUpdateUserProfile() {
         givenCreationUserProfileAndId();
-        userProfileDTO = new UserProfileDTO(
+        userProfileDTO = new UserProfileDto(
                 "gambikus2.0",
                 "Vasya",
                 18,
@@ -162,7 +161,7 @@ public class UserProfileControllerTest {
         responseSpec = webTestClient
                 .put()
                 .uri("/user/profile/{id}", userProfileId)
-                .body(Mono.just(userProfileDTO), UserProfileDTO.class)
+                .body(Mono.just(userProfileDTO), UserProfileDto.class)
                 .exchange();
     }
 
@@ -171,7 +170,7 @@ public class UserProfileControllerTest {
                 .get()
                 .uri("/user/profile/{id}", userProfileId)
                 .exchange()
-                .expectBody(UserProfileDTO.class)
+                .expectBody(UserProfileDto.class)
                 .isEqualTo(userProfileDTO);
     }
 
@@ -186,21 +185,21 @@ public class UserProfileControllerTest {
 
     private void givenCreationOfThreeUserProfiles() {
         DTOs = new ArrayList<>(Arrays.asList(
-                new UserProfileDTO(
+                new UserProfileDto(
                         "gambikus",
                         "Vasya",
                         18,
                         Gender.MALE,
                         "61.0, 60.0"
                 ),
-                new UserProfileDTO(
+                new UserProfileDto(
                         "example",
                         "Petya",
                         22,
                         Gender.HIDDEN,
                         "71.0, 67.0"
                 ),
-                new UserProfileDTO(
+                new UserProfileDto(
                         "login",
                         "Sasha",
                         5,
@@ -209,7 +208,7 @@ public class UserProfileControllerTest {
                 )
                 ));
 
-        for (UserProfileDTO DTO:
+        for (UserProfileDto DTO:
              DTOs) {
             userProfileDTO = DTO;
             whenCreateUserProfile();
