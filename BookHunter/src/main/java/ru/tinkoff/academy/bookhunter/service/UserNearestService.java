@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import ru.tinkoff.academy.bookhunter.converter.UserProfileConverter;
 import ru.tinkoff.academy.bookhunter.model.UserProfile;
-import ru.tinkoff.academy.bookhunter.DTO.UserProfileDTO;
+import ru.tinkoff.academy.bookhunter.dto.UserProfileDto;
 import ru.tinkoff.academy.bookhunter.repo.UserProfileMap;
 
 import java.util.*;
@@ -20,14 +20,14 @@ public class UserNearestService {
 
     private final EarthDistanceService earthDistanceService;
 
-    public Flux<UserProfileDTO> getNearestToId(UUID id, Long distance, Long amount) {
+    public Flux<UserProfileDto> getNearestToId(UUID id, Long distance, Long amount) {
         List<UserProfile> userProfiles = new ArrayList<>(userProfileMap.findAll());
         UserProfile mainUserProfile = userProfileMap.findById(id);
 
         Comparator<UserProfile> byDistance = generateUserProfileComparator(mainUserProfile);
 
         userProfiles.sort(byDistance);
-        List<UserProfileDTO> result = new ArrayList<>();
+        List<UserProfileDto> result = new ArrayList<>();
 
         for (int i = 0; i < userProfiles.size() && result.size() < amount; i++) {
             UserProfile currentUserProfile = userProfiles.get(i);
@@ -42,7 +42,7 @@ public class UserNearestService {
             if (earthDistanceService.compareWithError(currentDistance, (double)distance) == 1) {
                 break;
             }
-            result.add(userProfileConverter.toDTO(currentUserProfile));
+            result.add(userProfileConverter.toDto(currentUserProfile));
         }
 
         return Flux.fromIterable(result);
@@ -66,7 +66,7 @@ public class UserNearestService {
                 );
     }
 
-    public Flux<UserProfileDTO> getNearestToLocation(Double latitude, Double longitude, Long distance, Long amount) {
+    public Flux<UserProfileDto> getNearestToLocation(Double latitude, Double longitude, Long distance, Long amount) {
         UserProfile mainUserProfile = userProfileMap.findByLocation(latitude, longitude);
         return this.getNearestToId(mainUserProfile.getId(), distance, amount);
     }
