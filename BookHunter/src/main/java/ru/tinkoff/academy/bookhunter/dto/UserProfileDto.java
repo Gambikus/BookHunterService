@@ -1,4 +1,4 @@
-package ru.tinkoff.academy.bookhunter.DTO;
+package ru.tinkoff.academy.bookhunter.dto;
 
 import lombok.*;
 import ru.tinkoff.academy.bookhunter.model.enums.Gender;
@@ -6,7 +6,7 @@ import ru.tinkoff.academy.bookhunter.model.enums.Gender;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserProfileDTO {
+public class UserProfileDto {
 
     private String nick;
 
