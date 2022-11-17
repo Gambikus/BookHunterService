@@ -17,7 +17,7 @@ public class SystemController {
 
     private final SystemService systemService;
 
-    @GetMapping("/liveness")
+    @GetMapping(value = "/liveness", produces = MediaType.APPLICATION_JSON_VALUE)
     Mono<String> getLivenessStatus() {
         return systemService.getSystemResponse("health/liveness");
     }
