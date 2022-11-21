@@ -16,6 +16,8 @@ public class UserNearestService {
 
     private final UserProfileMap userProfileMap;
 
+
+
     private final UserProfileConverter userProfileConverter;
 
     private final EarthDistanceService earthDistanceService;
