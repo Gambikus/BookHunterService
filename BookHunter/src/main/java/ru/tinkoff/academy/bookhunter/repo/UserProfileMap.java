@@ -16,7 +16,7 @@ public class UserProfileMap {
 
     public UserProfile findById(UUID id) {
         if (!repo.containsKey(id)) {
-            throw new UserProfileNotFoundException("id" + id.toString());
+            throw new UserProfileNotFoundException("id " + id.toString());
         }
         return repo.get(id);
     }
@@ -32,14 +32,14 @@ public class UserProfileMap {
 
     public void deleteById(UUID id) {
         if (!repo.containsKey(id)) {
-            throw new UserProfileNotFoundException("id" + id.toString());
+            throw new UserProfileNotFoundException("id " + id.toString());
         }
         repo.remove(id);
     }
 
     public void update(UUID id, UserProfile userProfile) {
         if (!repo.containsKey(id)) {
-            throw new UserProfileNotFoundException("id" + id.toString());
+            throw new UserProfileNotFoundException("id " + id.toString());
         }
         repo.put(id, userProfile);
     }
@@ -52,7 +52,11 @@ public class UserProfileMap {
                 return currentUserProfile;
             }
         }
-        throw new UserProfileNotFoundException("location" + latitude.toString() + ", " + longitude.toString());
+        throw new UserProfileNotFoundException("location " + latitude.toString() + ", " + longitude.toString());
+    }
+
+    public void deleteAll() {
+        repo.clear();
     }
 
     public void deleteAll() {

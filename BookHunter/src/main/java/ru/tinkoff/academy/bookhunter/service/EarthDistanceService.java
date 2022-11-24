@@ -10,6 +10,12 @@ public class EarthDistanceService {
     // Радиус земли в метрах
     private final Double earthRadius = 6371009D;
 
+    /*
+        Я считаю расстояние по формуле Хаверсина, а у него погрешность 0,5 процента,
+        так что такая погрешность для сравнения
+     */
+    private final double errorForDistanceComparing = 0.005;
+
     public Double getDistanceBetweenTwoObjects(Double latitude1,
                                                Double longitude1,
                                                Double latitude2,
@@ -29,11 +35,11 @@ public class EarthDistanceService {
                         + Math.cos(latitude1) * Math.cos(latitude2) * Math.pow(Math.sin(meanLongitude), 2)));
     }
 
-    public int compareWithError(Double a, Double b) {
-        if (a * 1.005 < b) {
+    public int compareWithError(Double firstNumber, Double secondNumber) {
+        if (firstNumber * (1 + errorForDistanceComparing) < secondNumber) {
             return -1;
         }
-        if (a * 0.995 > b) {
+        if (firstNumber * (1 - errorForDistanceComparing) > secondNumber) {
             return 1;
         }
         return 0;
