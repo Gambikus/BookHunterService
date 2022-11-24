@@ -8,6 +8,7 @@ import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWeb
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import reactor.core.publisher.Mono;
+import ru.tinkoff.academy.bookhunter.controller.util.UserProfileFactory;
 import ru.tinkoff.academy.bookhunter.dto.UserProfileDto;
 import ru.tinkoff.academy.bookhunter.model.enums.Gender;
 import ru.tinkoff.academy.bookhunter.repo.UserProfileMap;
@@ -54,13 +55,7 @@ public class UserProfileControllerTest {
     }
 
     private void givenUserProfileDTO() {
-        userProfileDTO = new UserProfileDto(
-                "gambikus",
-                "Vasya",
-                18,
-                Gender.MALE,
-                "60.0, 60.0"
-        );
+        userProfileDTO = UserProfileFactory.CreateRandomDto();
     }
 
     private void whenCreateUserProfile() {
@@ -147,14 +142,7 @@ public class UserProfileControllerTest {
 
     private void givenCreationUserProfileAndUpdateUserProfile() {
         givenCreationUserProfileAndId();
-        userProfileDTO = new UserProfileDto(
-                "gambikus2.0",
-                "Vasya",
-                18,
-                Gender.MALE,
-                "61.0, 60.0"
-        );
-
+        userProfileDTO = UserProfileFactory.CreateRandomDto();
     }
 
     private void whenUpdateUserProfileById() {
@@ -176,41 +164,19 @@ public class UserProfileControllerTest {
 
     @Test
     public void testGettingThreeUserProfiles() {
-        givenCreationOfThreeUserProfiles();
+        givenCreationOfUserProfiles(3);
 
         whenGetAllUserProfiles();
 
         thenGetRequestShouldContainThreeUserProfiles();
     }
 
-    private void givenCreationOfThreeUserProfiles() {
-        DTOs = new ArrayList<>(Arrays.asList(
-                new UserProfileDto(
-                        "gambikus",
-                        "Vasya",
-                        18,
-                        Gender.MALE,
-                        "61.0, 60.0"
-                ),
-                new UserProfileDto(
-                        "example",
-                        "Petya",
-                        22,
-                        Gender.HIDDEN,
-                        "71.0, 67.0"
-                ),
-                new UserProfileDto(
-                        "login",
-                        "Sasha",
-                        5,
-                        Gender.FEMALE,
-                        "41.0, 64.0"
-                )
-                ));
+    private void givenCreationOfUserProfiles(int numberOfUserProfiles) {
+        DTOs = new ArrayList<>();
 
-        for (UserProfileDto DTO:
-             DTOs) {
-            userProfileDTO = DTO;
+        for (int i = 0; i < numberOfUserProfiles; i++) {
+            DTOs.add(UserProfileFactory.CreateRandomDto());
+            userProfileDTO = DTOs.get(i);
             whenCreateUserProfile();
         }
     }
@@ -228,7 +194,7 @@ public class UserProfileControllerTest {
                 .is2xxSuccessful()
                 .expectBody()
                 .jsonPath("$.length()")
-                .isEqualTo(3);
+                .isEqualTo(DTOs.size());
 
     }
 }

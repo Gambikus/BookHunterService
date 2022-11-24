@@ -7,7 +7,7 @@ import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWeb
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
-@SpringBootTest()
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 @AutoConfigureWebTestClient
 public class SystemControllerTest {
 
@@ -18,7 +18,7 @@ public class SystemControllerTest {
 
     @Test
     public void testLivenessStatus() {
-        whenGetRequest("/actuator/health/liveness");
+        whenGetRequest("/system/liveness");
 
         thenShouldBeUp();
     }
