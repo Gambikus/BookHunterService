@@ -2,6 +2,7 @@ package ru.tinkoff.academy.bookhunter.controller;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,7 +17,7 @@ public class SystemController {
 
     private final SystemService systemService;
 
-    @GetMapping("/liveness")
+    @GetMapping(value = "/liveness", produces = MediaType.APPLICATION_JSON_VALUE)
     Mono<String> getLivenessStatus() {
         return systemService.getSystemResponse("health/liveness");
     }
@@ -27,7 +28,7 @@ public class SystemController {
     }
 
 
-    @GetMapping("/version")
+    @GetMapping(value = "/version", produces = MediaType.APPLICATION_JSON_VALUE)
     Mono<String> getHealthStatus() {
         return systemService.getSystemResponse("info");
     }
