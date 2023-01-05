@@ -1,16 +1,23 @@
 package ru.tinkoff.academy.bookhunter.service;
 
 
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
 @Service
-@RequiredArgsConstructor
 public class SystemService {
     private final WebClient webClient;
-    final String baseUrl = "http://localhost:8080/actuator/";
+    private final String baseUrl;
+
+    public SystemService(
+            WebClient webClient,
+            @Value("${server.port}") String selfPort
+    ) {
+        this.webClient = webClient;
+        this.baseUrl = "http://localhost:" + selfPort + "/actuator/";
+    }
 
     public Mono<String> getSystemResponse(String endpoint) {
         return webClient
