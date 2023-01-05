@@ -2,14 +2,13 @@ package ru.tinkoff.academy.bookhunter.controller;
 
 
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import reactor.core.publisher.Mono;
-import ru.tinkoff.academy.bookhunter.DTO.UserProfileDTO;
+import ru.tinkoff.academy.bookhunter.dto.UserProfileDto;
 import ru.tinkoff.academy.bookhunter.model.enums.Gender;
 import ru.tinkoff.academy.bookhunter.repo.UserProfileMap;
 
@@ -28,7 +27,7 @@ public class UserNearestControllerTest {
     @Autowired
     private WebTestClient webTestClient;
 
-    private List<UserProfileDTO> DTOs;
+    private List<UserProfileDto> DTOs;
 
     private WebTestClient.ResponseSpec responseSpec;
 
@@ -41,21 +40,21 @@ public class UserNearestControllerTest {
 
     private void givenCreationUserProfiles() {
         DTOs = new ArrayList<>(Arrays.asList(
-                new UserProfileDTO(
+                new UserProfileDto(
                         "gambikus",
                         "Vasya",
                         18,
                         Gender.MALE,
                         "41.0, 63.9"
                 ),
-                new UserProfileDTO(
+                new UserProfileDto(
                         "example",
                         "Petya",
                         22,
                         Gender.HIDDEN,
                         "71.0, 67.0"
                 ),
-                new UserProfileDTO(
+                new UserProfileDto(
                         "login",
                         "Sasha",
                         5,
@@ -64,11 +63,11 @@ public class UserNearestControllerTest {
                 )
         ));
 
-        for (UserProfileDTO DTO:
+        for (UserProfileDto DTO:
                 DTOs) {
             responseSpec = webTestClient.post()
                     .uri("/user/profile")
-                    .body(Mono.just(DTO), UserProfileDTO.class)
+                    .body(Mono.just(DTO), UserProfileDto.class)
                     .exchange();
         }
         id = responseSpec.returnResult(UUID.class).getResponseBody().blockFirst();

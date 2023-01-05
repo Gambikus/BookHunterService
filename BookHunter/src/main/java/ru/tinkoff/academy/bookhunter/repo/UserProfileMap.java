@@ -58,8 +58,4 @@ public class UserProfileMap {
     public void deleteAll() {
         repo.clear();
     }
-
-    public void deleteAll() {
-        repo.clear();
-    }
 }
