@@ -7,42 +7,12 @@ import reactor.core.publisher.Mono;
 import ru.tinkoff.academy.bookhunter.service.interfaces.ServiceDiscovery;
 
 @Service
-public class BlackBooksServiceDiscovery implements ServiceDiscovery {
-    private final WebClient webClient;
-    private final String url;
+public class BlackBooksServiceDiscovery extends DefaultServiceDiscovery {
 
     public BlackBooksServiceDiscovery (
             WebClient webClient,
             @Value("${service.blackBooks.url}") String url
     ) {
-        this.webClient = webClient;
-        this.url = url;
-    }
-
-    public Mono<String> discoverService() {
-        Mono<String> livenessResponse = getLivenessResponse();
-
-        Mono<String> versionResponse = getVersionResponse();
-        return livenessResponse
-                .filter(msg -> !msg.contains("UP"))
-                .switchIfEmpty(versionResponse)
-                .onErrorReturn("BookShelfService is not available.");
-    }
-
-    private Mono<String> getVersionResponse() {
-        return webClient
-                .get()
-                .uri(url + "/system/info")
-                .retrieve()
-                .bodyToMono(String.class);
-    }
-
-    private Mono<String> getLivenessResponse() {
-
-        return webClient
-                .get()
-                .uri(url + "/system/liveness")
-                .retrieve()
-                .bodyToMono(String.class);
+        super(webClient, url, "BlackBookService");
     }
 }

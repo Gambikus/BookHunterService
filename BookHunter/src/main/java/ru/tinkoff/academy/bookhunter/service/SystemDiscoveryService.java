@@ -7,30 +7,29 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.util.function.Tuple2;
 
-import java.util.AbstractMap;
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
 public class SystemDiscoveryService {
 
-    private final BlackBooksServiceDiscovery blackBooksServiceDiscovery;
 
-    private final BookShelfServiceDiscovery bookShelfServiceDiscovery;
+    private final List<DefaultServiceDiscovery> servicesForDiscovery;
 
-    public Flux<Object> discoverServices() {
-        Flux<String> a = bookShelfServiceDiscovery.discoverService().mergeWith(blackBooksServiceDiscovery.discoverService());
+    public Flux<Map.Entry<String, String>> discoverServices() {
+
+        Flux<String> servicesResponses = Flux.empty();
+        for (DefaultServiceDiscovery service:
+             servicesForDiscovery) {
+            servicesResponses = servicesResponses.mergeWith(service.discoverService());
+        }
         Flux<String> servicesNames = Flux.fromIterable(
-                new ArrayList<>(
-                        Arrays.asList(
-                                "BookShelfService",
-                                "BlackBooksService"
-                        )
-                )
+                servicesForDiscovery
+                        .stream()
+                        .map(DefaultServiceDiscovery::getServiceName)
+                        .collect(Collectors.toList())
         );
-        return a.zipWith(servicesNames, (response, name) -> new AbstractMap.SimpleEntry<>(name, response));
-
+        return servicesResponses.zipWith(servicesNames, (response, name) -> new AbstractMap.SimpleEntry<>(name, response));
     }
 }
