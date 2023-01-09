@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Error {
+public class WebApplicationException {
     private String message;
     private int code;
 }
