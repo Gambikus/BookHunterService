@@ -22,7 +22,7 @@ public class SystemController {
         return systemService.getSystemResponse("health/liveness");
     }
 
-    @GetMapping("/readiness")
+    @GetMapping(value = "/readiness", produces = MediaType.APPLICATION_JSON_VALUE)
     Mono<String> getReadinessStatus() {
         return systemService.getSystemResponse("health/readiness");
     }

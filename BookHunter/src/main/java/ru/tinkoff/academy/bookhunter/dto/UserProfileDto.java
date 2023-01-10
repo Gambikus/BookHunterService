@@ -16,5 +16,7 @@ public class UserProfileDto {
 
     private Gender gender;
 
-    private String location;
+    private Double latitude;
+
+    private Double longitude;
 }

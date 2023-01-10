@@ -19,20 +19,15 @@ public class UserProfileConverter {
         if (userProfile == null) {
             return null;
         }
-        UserProfileDto userProfileDTO = modelMapper.map(userProfile, UserProfileDto.class);
-        userProfileDTO.setLocation(userProfile.getLatitude().toString() + ", " + userProfile.getLongitude().toString());
-        return userProfileDTO;
+        return modelMapper.map(userProfile, UserProfileDto.class);
     }
 
     public UserProfile toEntity(UserProfileDto userProfileDto, UUID id) {
         if (userProfileDto == null) {
             return null;
         }
-        String[] location = userProfileDto.getLocation().split(", ");
         UserProfile userProfile = modelMapper.map(userProfileDto, UserProfile.class);
         userProfile.setId(Objects.requireNonNullElseGet(id, UUID::randomUUID));
-        userProfile.setLatitude(Double.parseDouble(location[0]));
-        userProfile.setLongitude(Double.parseDouble(location[1]));
         return userProfile;
     }
 }
