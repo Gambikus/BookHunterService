@@ -4,9 +4,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import ru.tinkoff.academy.bookhunter.converter.UserProfileConverter;
+import ru.tinkoff.academy.bookhunter.exception.UserProfileNotFoundException;
 import ru.tinkoff.academy.bookhunter.model.UserProfile;
 import ru.tinkoff.academy.bookhunter.dto.UserProfileDto;
-import ru.tinkoff.academy.bookhunter.repo.UserProfileMap;
+import ru.tinkoff.academy.bookhunter.repo.UserProfileRepository;
 
 import java.util.*;
 
@@ -14,18 +15,20 @@ import java.util.*;
 @RequiredArgsConstructor
 public class UserNearestService {
 
-    private final UserProfileMap userProfileMap;
 
-
+    private final UserProfileRepository userProfileRepository;
 
     private final UserProfileConverter userProfileConverter;
 
     private final EarthDistanceService earthDistanceService;
 
     public Flux<UserProfileDto> getNearestToId(UUID id, Long distance, Long amount) {
-        List<UserProfile> userProfiles = new ArrayList<>(userProfileMap.findAll());
-        UserProfile mainUserProfile = userProfileMap.findById(id);
-
+        List<UserProfile> userProfiles = new ArrayList<>(userProfileRepository.findAll());
+        Optional<UserProfile> userProfile = userProfileRepository.findById(id);
+        if (userProfile.isEmpty()) {
+            throw new UserProfileNotFoundException("id " + id.toString());
+        }
+        UserProfile mainUserProfile = userProfile.get();
         Comparator<UserProfile> byDistance = generateUserProfileComparator(mainUserProfile);
 
         userProfiles.sort(byDistance);
@@ -69,7 +72,10 @@ public class UserNearestService {
     }
 
     public Flux<UserProfileDto> getNearestToLocation(Double latitude, Double longitude, Long distance, Long amount) {
-        UserProfile mainUserProfile = userProfileMap.findByLocation(latitude, longitude);
-        return this.getNearestToId(mainUserProfile.getId(), distance, amount);
+        Optional<UserProfile> mainUserProfile = userProfileRepository.findByLongitudeAndLatitude(longitude, latitude);
+        if (mainUserProfile.isEmpty()) {
+            throw new UserProfileNotFoundException("location " + latitude.toString() + ", " + longitude.toString());
+        }
+        return this.getNearestToId(mainUserProfile.get().getId(), distance, amount);
     }
 }

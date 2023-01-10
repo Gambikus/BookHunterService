@@ -6,10 +6,13 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import ru.tinkoff.academy.bookhunter.converter.UserProfileConverter;
 import ru.tinkoff.academy.bookhunter.dto.UserProfileDto;
+import ru.tinkoff.academy.bookhunter.exception.UserProfileNotFoundException;
 import ru.tinkoff.academy.bookhunter.model.UserProfile;
 import ru.tinkoff.academy.bookhunter.repo.UserProfileMap;
+import ru.tinkoff.academy.bookhunter.repo.UserProfileRepository;
 
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -17,20 +20,24 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class UserProfileService {
 
-    private final UserProfileMap userProfileMap;
+    private final UserProfileRepository userProfileRepository;
 
     private final UserProfileConverter userProfileConverter;
 
     public Mono<UUID> save(UserProfileDto userProfileDTO) {
-        return Mono.just(userProfileMap.save(userProfileConverter.toEntity(userProfileDTO, null)));
+        return Mono.just(userProfileRepository.save(userProfileConverter.toEntity(userProfileDTO, null)).getId());
     }
 
     public Mono<UserProfileDto> findById(UUID id) {
-        return Mono.just(userProfileConverter.toDto(userProfileMap.findById(id)));
+        Optional<UserProfile> userProfile = userProfileRepository.findById(id);
+        if (userProfile.isEmpty()) {
+            throw new UserProfileNotFoundException("id " + id.toString());
+        }
+        return Mono.just(userProfileConverter.toDto(userProfile.get()));
     }
 
     public Flux<Map.Entry<UUID, UserProfileDto>> findAll() {
-        return Flux.fromIterable(userProfileMap
+        return Flux.fromIterable(userProfileRepository
                 .findAll()
                 .stream()
                 .collect(Collectors.toMap(UserProfile::getId, userProfileConverter::toDto))
@@ -38,11 +45,12 @@ public class UserProfileService {
     }
 
     public void deleteById(UUID id) {
-        userProfileMap.deleteById(id);
+        userProfileRepository.deleteById(id);
     }
 
     public Mono<UserProfileDto> update(UUID id, UserProfileDto userProfileDTO) {
-        userProfileMap.update(id, userProfileConverter.toEntity(userProfileDTO, id));
+        deleteById(id);
+        userProfileRepository.save(userProfileConverter.toEntity(userProfileDTO, id));
         return Mono.just(userProfileDTO);
     }
 }
